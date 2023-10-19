@@ -8,43 +8,58 @@ CREATE TABLE EventActivity (
 	ActivityName VARCHAR(20) NOT NULL
 );
 
+INSERT INTO EventActivity (ActivityName) 
+VALUES ('Design'), ('Construction'), ('Test'), ('Password Reset');
+
+
 DROP TABLE IF EXISTS EventOrigin;
 CREATE TABLE EventOrigin (
-	ID INTEGER UNIQUE,
-	OriginName VARCHAR(20) NOT NULL,
-	FOREIGN KEY (ID) REFERENCES EventActivity(ID)
+	ID INT AUTO_INCREMENT PRIMARY KEY,
+	OriginName VARCHAR(20) NOT NULL
 );
+
+INSERT INTO EventOrigin (OriginName)
+VALUES ('Joe S.'), ('Bill B.'), ('George E.'), ('Achmed M.'), ('Rona E.');
+
 
 DROP TABLE IF EXISTS EventStatus;
 CREATE TABLE EventStatus (
-	ID INTEGER UNIQUE,
-	Status VARCHAR(20) NOT NULL,
-	FOREIGN KEY (ID) REFERENCES EventActivity(ID)
+	ID INT AUTO_INCREMENT PRIMARY KEY,
+	Status VARCHAR(20) NOT NULL
 );
+
+INSERT INTO EventStatus (Status) 
+VALUES ('Open'), ('On Hold'), ('In Process'), ('Deployed'), ('Deployed Failed');
+
 
 DROP TABLE IF EXISTS EventClass;
 CREATE TABLE EventClass (
-	ID INTEGER UNIQUE,
-	Class VARCHAR(20) NOT NULL,
-	FOREIGN KEY (ID) REFERENCES EventActivity(ID)
+	ID INT AUTO_INCREMENT PRIMARY KEY,
+	Class VARCHAR(20) NOT NULL
 );
+
+INSERT INTO EventClass (Class) 
+VALUES ('Change'), ('Incident'), ('Problem'), ('Service Request');
+
 
 DROP TABLE IF EXISTS EventLog;
 CREATE TABLE EventLog (
-	ID INTEGER UNIQUE,
+	ID INT AUTO_INCREMENT PRIMARY KEY,
 	Caseid VARCHAR(20) UNIQUE NOT NULL,
+	Activity VARCHAR(20) NOT NULL,
 	Urgency VARCHAR(1) NOT NULL,
 	Impact VARCHAR(1) NOT NULL,
  	Priority VARCHAR(1) NOT NULL,
 	StartDate DATE NOT NULL,
+	EndDate DATE NOT NULL,
+	TicketStatus VARCHAR(20) NOT NULL,
 	UpdateDateTime DATETIME NOT NULL,
 	Duration INTEGER NOT NULL,
-	CONSTRAINT check_caseid_format CHECK (Caseid REGEXP '^CS_[0-9]+$'),
-	FOREIGN KEY (ID) REFERENCES EventActivity(ID),
-	FOREIGN KEY (ID) REFERENCES EventStatus(ID),
-	FOREIGN KEY (ID) REFERENCES EventOrigin(ID),
-	FOREIGN KEY (ID) REFERENCES EventClass(ID)
+	Origin VARCHAR(20) NOT NULL,
+	Class VARCHAR(20) NOT NULL,
+	CONSTRAINT check_caseid_format CHECK (Caseid REGEXP '^CS_[0-9]+$')
 );
+
 
 
 
